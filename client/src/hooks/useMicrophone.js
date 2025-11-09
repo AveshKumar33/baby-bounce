@@ -8,6 +8,7 @@ export default function useMicrophone() {
 
   useEffect(() => {
     let rafId = 0;
+
     async function setup() {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
@@ -16,8 +17,8 @@ export default function useMicrophone() {
         const source = audioCtx.createMediaStreamSource(stream);
         const analyser = audioCtx.createAnalyser();
         analyser.fftSize = 1024;
-        source.connect(analyser);
         const dataArray = new Uint8Array(analyser.frequencyBinCount);
+        source.connect(analyser);
 
         audioContextRef.current = audioCtx;
         analyserRef.current = analyser;
@@ -36,9 +37,10 @@ export default function useMicrophone() {
         };
         loop();
       } catch (err) {
-        console.error("microphone error", err);
+        console.error("Microphone error", err);
       }
     }
+
     setup();
     return () => {
       cancelAnimationFrame(rafId);
